@@ -57,7 +57,17 @@ function App() {
     });
   };
 
-  console.log(parameters.model);
+  const filterYears = function (e) {
+    const filteredCarsByYear = cars.filter(
+      (el) => el.Model.toLowerCase() === e.target.value
+    );
+    const filteredyears = [
+      ...new Set(filteredCarsByYear.flatMap((obj) => obj.Year)),
+    ];
+    setParameters((prevParameters) => {
+      return { ...prevParameters, year: filteredyears };
+    });
+  };
 
   return (
     <div className="main__container">
@@ -80,7 +90,12 @@ function App() {
         <br></br>
 
         <label for="model">Choose a model:</label>
-        <select name="model" id="model" form="modelform">
+        <select
+          onChange={(event) => filterYears(event)}
+          name="model"
+          id="model"
+          form="modelform"
+        >
           <option value="none" selected disabled hidden>
             Select model{" "}
           </option>
@@ -96,10 +111,10 @@ function App() {
           <option value="none" selected disabled hidden>
             Select year{" "}
           </option>
-          <option value="2020">2020</option>
-          <option value="2019">2019</option>
-          <option value="2018">2018</option>
-          <option value="2017">2017</option>
+          {/* map through all models and show the list of years*/}
+          {parameters.year.map((el) => {
+            return <option value={el}>{el}</option>;
+          })}
         </select>
       </div>
       <div className="carDB--container"></div>;
