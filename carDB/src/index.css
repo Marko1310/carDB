@@ -1,0 +1,16 @@
+.main__container {
+  display: flex;
+  flex-direction: row;
+}
+
+.carDB--container {
+  width: 100%;
+  height: 100vh;
+  border-style: solid;
+}
+
+.sidebar--container {
+  width: 400px;
+  height: 100vh;
+  border-style: solid;
+}

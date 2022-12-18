@@ -1,8 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
-  // state for cars database
+  // state for all cars
   const [cars, setCars] = useState([]);
+
+  // import cars state
+  useEffect(() => getAllCars(), []);
+
+  // state for parameters
+  const [parameters, setParameters] = useState({
+    make: [],
+    model: [],
+    year: [],
+  });
+
+  // useEffect(
+  //   () =>
+  //     setParameters((prevParameters) => {
+  //       return { ...prevParameters, model: { model } };
+  //     }),
+  //   [carModel]
+  // );
+  // console.log(parameters.model);
 
   // fetch all the cars
   const getAllCars = function () {
@@ -14,16 +33,78 @@ function App() {
     })
       .then((res) => res.json())
       .then((data) => {
-        const newArr = data.results.flat(2);
-        return setCars(newArr);
+        // extract each propertie from array of objects -> create new set to eliminate duplicates -> return back to an array of filtered properties
+        const allMakes = [...new Set(data.results.flatMap((obj) => obj.Make))];
+        const allModels = [
+          ...new Set(data.results.flatMap((obj) => obj.Model)),
+        ];
+        const allYears = [...new Set(data.results.flatMap((obj) => obj.Year))];
+
+        setCars(data.results);
+        setParameters({ make: allMakes, model: allModels, year: allYears });
       });
   };
 
-  // import cars state
-  useEffect(() => getAllCars(), []);
-  console.log(cars);
+  const filterModels = function (e) {
+    const filteredCarsByMake = cars.filter(
+      (el) => el.Make.toLowerCase() === e.target.value
+    );
+    const filteredModels = [
+      ...new Set(filteredCarsByMake.flatMap((obj) => obj.Model)),
+    ];
+    setParameters((prevParameters) => {
+      return { ...prevParameters, model: filteredModels };
+    });
+  };
 
-  return <div></div>;
+  console.log(parameters.model);
+
+  return (
+    <div className="main__container">
+      <div className="sidebar--container">
+        <label for="cars">Choose a car:</label>
+        <select
+          onChange={(event) => filterModels(event)}
+          name="cars"
+          id="cars"
+          form="carform"
+        >
+          <option value="none" selected disabled hidden>
+            Select an Option
+          </option>
+          {/* map through all cars and show the list */}
+          {parameters.make.map((el) => {
+            return <option value={el.toLowerCase()}>{el}</option>;
+          })}
+        </select>
+        <br></br>
+
+        <label for="model">Choose a model:</label>
+        <select name="model" id="model" form="modelform">
+          <option value="none" selected disabled hidden>
+            Select model{" "}
+          </option>
+          {/* map through all makes and show the list of models*/}
+          {parameters.model.map((el) => {
+            return <option value={el.toLowerCase()}>{el}</option>;
+          })}
+        </select>
+        <br></br>
+
+        <label for="year">Choose a year:</label>
+        <select name="year" id="year" form="yearform">
+          <option value="none" selected disabled hidden>
+            Select year{" "}
+          </option>
+          <option value="2020">2020</option>
+          <option value="2019">2019</option>
+          <option value="2018">2018</option>
+          <option value="2017">2017</option>
+        </select>
+      </div>
+      <div className="carDB--container"></div>;
+    </div>
+  );
 }
 
 export default App;
