@@ -26,19 +26,6 @@ function App() {
       (parameters.yearFilter !== "" ? el.Year === +parameters.yearFilter : true)
   );
 
-  console.log(filter);
-  // state for selected parameters
-  // const [submit, setSubmit] = useState[]
-
-  // useEffect(
-  //   () =>
-  //     setParameters((prevParameters) => {
-  //       return { ...prevParameters, model: { model } };
-  //     }),
-  //   [carModel]
-  // );
-  // console.log(parameters.model);
-
   // fetch all the cars
   const getAllCars = function () {
     fetch("https://parseapi.back4app.com/classes/Car_Model_List?limit=10000", {
