@@ -39,16 +39,11 @@ function App() {
         setCars(data.results);
 
         // extract each propertie from array of objects -> create new set to eliminate duplicates -> return back to an array of filtered properties
-        const allMakes = [...new Set(data.results.flatMap((obj) => obj.Make))];
-        // const allModels = [
-        //   ...new Set(data.results.flatMap((obj) => obj.Model)),
-        // ];
-        // const allYears = [...new Set(data.results.flatMap((obj) => obj.Year))];
+        const allMakes = [...new Set(data.results.map((obj) => obj.Make))];
+
         setParameters((prevParameters) => {
           return { ...prevParameters, make: allMakes };
         });
-
-        // Napomena: mogu se napuniti i arrayevi od modela i godina ali onda na pocetku stranice ima neogranicen izbor modela, zato su arrayaevi prazni
       });
   };
 
