@@ -4,7 +4,7 @@ const Sidebar = ({
   renderCar,
   filterModels,
   filterYears,
-  changeParameters,
+  changeYearParameters,
   parameters,
 }) => {
   return (
@@ -46,7 +46,7 @@ const Sidebar = ({
 
         <label for="year">Choose a year:</label>
         <select
-          onChange={(event) => changeParameters(event)}
+          onChange={(event) => changeYearParameters(event)}
           name="year"
           id="year"
           form="yearform"

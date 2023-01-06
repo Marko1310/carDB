@@ -19,6 +19,8 @@ function App() {
     yearFilter: "",
   });
 
+  const [render, setRender] = useState(false);
+
   const filter = cars.filter(
     (el) =>
       el.Make.toLowerCase() === parameters.makeFilter &&
@@ -55,7 +57,7 @@ function App() {
       (el) => el.Make.toLowerCase() === e.target.value
     );
     const filteredModels = [
-      ...new Set(filteredCarsByMake.flatMap((obj) => obj.Model)),
+      ...new Set(filteredCarsByMake.map((obj) => obj.Model)),
     ];
     setParameters((prevParameters) => {
       return {
@@ -72,7 +74,7 @@ function App() {
       (el) => el.Model.toLowerCase() === e.target.value
     );
     const filteredyears = [
-      ...new Set(filteredCarsByYear.flatMap((obj) => obj.Year)),
+      ...new Set(filteredCarsByYear.map((obj) => obj.Year)),
     ];
     setParameters((prevParameters) => {
       return {
@@ -83,14 +85,12 @@ function App() {
     });
   };
 
-  const [render, setRender] = useState(false);
-
   const renderCar = function (e) {
     e.preventDefault();
     setRender(true);
   };
 
-  const changeParameters = function (event) {
+  const changeYearParameters = function (event) {
     setParameters((prevParameters) => {
       return {
         ...prevParameters,
@@ -105,7 +105,7 @@ function App() {
         renderCar={renderCar}
         filterModels={filterModels}
         filterYears={filterYears}
-        changeParameters={changeParameters}
+        changeYearParameters={changeYearParameters}
         parameters={parameters}
       />
       <Cars filter={filter} render={render} />
