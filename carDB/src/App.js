@@ -14,21 +14,16 @@ function App() {
     make: [],
     model: [],
     year: [],
+  });
+
+  // state for holding filter parameters
+  const [filterParameters, setFilterParameters] = useState({
     makeFilter: "",
     modelFilter: "",
     yearFilter: "",
   });
 
   const [render, setRender] = useState(false);
-
-  const filter = cars.filter(
-    (el) =>
-      el.Make.toLowerCase() === parameters.makeFilter &&
-      (parameters.modelFilter !== ""
-        ? el.Model.toLowerCase() === parameters.modelFilter
-        : true) &&
-      (parameters.yearFilter !== "" ? el.Year === +parameters.yearFilter : true)
-  );
 
   // fetch all the cars
   const getAllCars = function () {
@@ -51,6 +46,7 @@ function App() {
       });
   };
 
+  // Filter the models that equal to selected make
   const filterModels = function (e) {
     setRender(false);
     const filteredCarsByMake = cars.filter(
@@ -63,11 +59,18 @@ function App() {
       return {
         ...prevParameters,
         model: filteredModels,
+      };
+    });
+
+    setFilterParameters((prevParameters) => {
+      return {
+        ...prevParameters,
         makeFilter: e.target.value,
       };
     });
   };
 
+  // Filter years that equal to selected make and model
   const filterYears = function (e) {
     setRender(false);
     const filteredCarsByYear = cars.filter(
@@ -80,7 +83,22 @@ function App() {
       return {
         ...prevParameters,
         year: filteredyears,
+      };
+    });
+    setFilterParameters((prevParameters) => {
+      return {
+        ...prevParameters,
         modelFilter: e.target.value,
+      };
+    });
+  };
+
+  // Update the filtered year
+  const changeYearFilter = function (event) {
+    setFilterParameters((prevParameters) => {
+      return {
+        ...prevParameters,
+        yearFilter: event.target.value,
       };
     });
   };
@@ -90,14 +108,18 @@ function App() {
     setRender(true);
   };
 
-  const changeYearParameters = function (event) {
-    setParameters((prevParameters) => {
-      return {
-        ...prevParameters,
-        yearFilter: event.target.value,
-      };
-    });
-  };
+  const filter = cars.filter(
+    (el) =>
+      el.Make.toLowerCase() === filterParameters.makeFilter &&
+      (filterParameters.modelFilter !== ""
+        ? el.Model.toLowerCase() === filterParameters.modelFilter
+        : true) &&
+      (filterParameters.yearFilter !== ""
+        ? el.Year === +filterParameters.yearFilter
+        : true)
+  );
+
+  console.log(filterParameters);
 
   return (
     <div className="main__container">
@@ -105,7 +127,7 @@ function App() {
         renderCar={renderCar}
         filterModels={filterModels}
         filterYears={filterYears}
-        changeYearParameters={changeYearParameters}
+        changeYearFilter={changeYearFilter}
         parameters={parameters}
       />
       <Cars filter={filter} render={render} />
