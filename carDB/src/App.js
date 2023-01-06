@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Sidebar from "./components/Sidebar";
+import Cars from "./components/Cars";
 
 function App() {
   // state for all cars
@@ -88,87 +90,25 @@ function App() {
     setRender(true);
   };
 
+  const changeParameters = function (event) {
+    setParameters((prevParameters) => {
+      return {
+        ...prevParameters,
+        yearFilter: event.target.value,
+      };
+    });
+  };
+
   return (
     <div className="main__container">
-      <div className="sidebar--container">
-        <form onSubmit={renderCar}>
-          <label for="cars">Choose a car:</label>
-          <select
-            onChange={(event) => filterModels(event)}
-            name="cars"
-            id="cars"
-            form="carform"
-          >
-            <option value="none" selected disabled hidden>
-              Select an Option
-            </option>
-            {/* map through all cars and show the list */}
-            {parameters.make.map((el) => {
-              return <option value={el.toLowerCase()}>{el}</option>;
-            })}
-          </select>
-          <br></br>
-
-          <label for="model">Choose a model:</label>
-          <select
-            onChange={(event) => filterYears(event)}
-            name="model"
-            id="model"
-            form="modelform"
-          >
-            <option value="none" selected disabled hidden>
-              Select model{" "}
-            </option>
-            {/* map through all makes and show the list of models*/}
-            {parameters.model.map((el) => {
-              return <option value={el.toLowerCase()}>{el}</option>;
-            })}
-          </select>
-          <br></br>
-
-          <label for="year">Choose a year:</label>
-          <select
-            onChange={(event) =>
-              setParameters((prevParameters) => {
-                return {
-                  ...prevParameters,
-                  yearFilter: event.target.value,
-                };
-              })
-            }
-            name="year"
-            id="year"
-            form="yearform"
-          >
-            <option value="none" selected disabled hidden>
-              Select year{" "}
-            </option>
-            {/* map through all models and show the list of years*/}
-            {parameters.year.map((el) => {
-              return <option value={el}>{el}</option>;
-            })}
-          </select>
-          <br></br>
-
-          <input type="submit" name="SUBMITBUTTON" value="Submit" />
-        </form>
-      </div>
-      {render && (
-        <div className="carDB--container">
-          {filter.map((card) => {
-            return (
-              <div className="carDB--card">
-                <ul className="carDB--list">
-                  <li>Car: {card.Make}</li>
-                  <li>Model: {card.Model}</li>
-                  <li>Year: {card.Year}</li>
-                  <li>Category: {card.Category}</li>
-                </ul>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      <Sidebar
+        renderCar={renderCar}
+        filterModels={filterModels}
+        filterYears={filterYears}
+        changeParameters={changeParameters}
+        parameters={parameters}
+      />
+      <Cars filter={filter} render={render} />
     </div>
   );
 }
