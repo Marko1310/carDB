@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 import Cars from "./components/Cars";
+import Navbar from "./components/Navbar";
 
 function App() {
   // state for all cars
@@ -55,6 +56,11 @@ function App() {
     const filteredModels = [
       ...new Set(filteredCarsByMake.map((obj) => obj.Model)),
     ];
+
+    // filterModels.unshift("---");
+
+    filteredModels.unshift("");
+
     setParameters((prevParameters) => {
       return {
         ...prevParameters,
@@ -79,6 +85,9 @@ function App() {
     const filteredyears = [
       ...new Set(filteredCarsByYear.map((obj) => obj.Year)),
     ];
+
+    filteredyears.unshift("");
+
     setParameters((prevParameters) => {
       return {
         ...prevParameters,
@@ -118,19 +127,19 @@ function App() {
         ? el.Year === +filterParameters.yearFilter
         : true)
   );
-
-  console.log(filterParameters);
-
   return (
-    <div className="main__container">
-      <Sidebar
-        renderCar={renderCar}
-        filterModels={filterModels}
-        filterYears={filterYears}
-        changeYearFilter={changeYearFilter}
-        parameters={parameters}
-      />
-      <Cars filter={filter} render={render} />
+    <div>
+      <Navbar />
+      <div className="main__container">
+        <Sidebar
+          renderCar={renderCar}
+          filterModels={filterModels}
+          filterYears={filterYears}
+          changeYearFilter={changeYearFilter}
+          parameters={parameters}
+        />
+        <Cars filter={filter} render={render} />
+      </div>
     </div>
   );
 }

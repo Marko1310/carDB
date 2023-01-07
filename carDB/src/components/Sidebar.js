@@ -9,8 +9,8 @@ const Sidebar = ({
 }) => {
   return (
     <div className="sidebar--container">
-      <form onSubmit={renderCar}>
-        <label for="cars">Choose a car:</label>
+      <form className="form--container" onSubmit={renderCar}>
+        <label for="cars">Make:</label>
         <select
           onChange={(event) => filterModels(event)}
           name="cars"
@@ -18,7 +18,7 @@ const Sidebar = ({
           form="carform"
         >
           <option value="none" selected disabled hidden>
-            Select an Option
+            Select Make
           </option>
           {/* map through all cars and show the list */}
           {parameters.make.map((el) => {
@@ -27,7 +27,7 @@ const Sidebar = ({
         </select>
         <br></br>
 
-        <label for="model">Choose a model:</label>
+        <label for="model">Model:</label>
         <select
           onChange={(event) => filterYears(event)}
           name="model"
@@ -44,7 +44,7 @@ const Sidebar = ({
         </select>
         <br></br>
 
-        <label for="year">Choose a year:</label>
+        <label for="year">Year:</label>
         <select
           onChange={(event) => changeYearFilter(event)}
           name="year"
